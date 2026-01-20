@@ -1,1 +1,168 @@
-
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINKCOOKING - รวมสูตรอาหาร</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        .header { background: white; padding: 15px 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { font-size: 30px; }
+        .logo-text { font-size: 24px; font-weight: bold; color: #e91e63; }
+        .nav-buttons { display: flex; gap: 10px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 25px; font-size: 14px; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .btn-pink { background: #e91e63; color: white; }
+        .btn-pink:hover { background: #c2185b; transform: translateY(-2px); }
+        .btn-purple { background: #9c27b0; color: white; }
+        .btn-purple:hover { background: #7b1fa2; transform: translateY(-2px); }
+        .btn-green { background: #4caf50; color: white; }
+        .btn-green:hover { background: #388e3c; transform: translateY(-2px); }
+        .btn-blue { background: #5c6bc0; color: white; }
+        .btn-blue:hover { background: #3f51b5; transform: translateY(-2px); }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+        .welcome-box { background: white; border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .welcome-box h2 { font-size: 36px; color: #333; margin-bottom: 10px; }
+        .welcome-box p { font-size: 18px; color: #666; }
+        .categories { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .category-buttons { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .category-btn { padding: 12px 30px; border: 2px solid #ddd; border-radius: 25px; background: white; color: #666; font-size: 16px; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .category-btn:hover { background: #f5f5f5; transform: translateY(-2px); }
+        .category-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: #667eea; }
+        .menu-section { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .section-title { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .menu-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: all 0.3s; cursor: pointer; }
+        .menu-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .menu-image { width: 100%; height: 250px; object-fit: cover; }
+        .menu-content { padding: 20px; }
+        .menu-title { font-size: 22px; font-weight: bold; color: #333; margin-bottom: 10px; }
+        .menu-description { font-size: 14px; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .view-recipe-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .view-recipe-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
+        .footer { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; padding: 30px; margin-top: 50px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content { background-color: white; margin: 3% auto; padding: 0; width: 90%; max-width: 900px; border-radius: 20px; box-shadow: 0 5px 30px rgba(0,0,0,0.3); animation: slideDown 0.3s; max-height: 90vh; overflow-y: auto; }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 20px 20px 0 0; position: relative; }
+        .modal-header h2 { font-size: 32px; margin-bottom: 10px; }
+        .modal-header p { font-size: 16px; opacity: 0.9; }
+        .close { position: absolute; right: 25px; top: 25px; color: white; font-size: 35px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .close:hover { transform: scale(1.2); }
+        .modal-body { padding: 30px; }
+        .recipe-image { width: 100%; height: 400px; object-fit: cover; border-radius: 15px; margin-bottom: 30px; }
+        .recipe-info { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        .info-item { display: flex; align-items: center; gap: 10px; padding: 15px 20px; background: #f5f5f5; border-radius: 10px; }
+        .recipe-section { margin-bottom: 30px; }
+        .recipe-section h3 { font-size: 24px; color: #333; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 3px solid #667eea; }
+        .ingredients-list { list-style: none; padding: 0; }
+        .ingredients-list li { padding: 12px 20px; margin-bottom: 8px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 5px; }
+        .steps-list { list-style: none; padding: 0; counter-reset: step-counter; }
+        .steps-list li { padding: 20px; margin-bottom: 15px; background: #f9f9f9; border-radius: 10px; position: relative; padding-left: 70px; counter-increment: step-counter; }
+        .steps-list li::before { content: counter(step-counter); position: absolute; left: 20px; top: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo"><span class="logo-icon">🍜</span><span class="logo-text">LINKCOOKING</span></div>
+            <div class="nav-buttons">
+                <button class="btn btn-pink">รวมร้านอาหารใกล้เคียง</button>
+                <button class="btn btn-purple">รวมสูตรอาหาร</button>
+                <button class="btn btn-green">UML</button>
+                <button class="btn btn-blue">เข้าสู่ระบบ</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="welcome-box"><h2>ยินดีต้อนรับ! 🎉</h2><p>เลือกเมนูอาหารที่คุณชอบและเรียนรู้วิธีทำได้เลย</p></div>
+        <div class="categories">
+            <div class="category-buttons">
+                <button class="category-btn active" onclick="filterMenu('ทั้งหมด')">ทั้งหมด</button>
+                <button class="category-btn" onclick="filterMenu('เมนูข้าว')">เมนูข้าว</button>
+                <button class="category-btn" onclick="filterMenu('เมนูเส้น')">เมนูเส้น</button>
+                <button class="category-btn" onclick="filterMenu('เมนูผัด')">เมนูผัด</button>
+                <button class="category-btn" onclick="filterMenu('เมนูต้ม/แกง')">เมนูต้ม/แกง</button>
+                <button class="category-btn" onclick="filterMenu('เมนูย่าง/ปิ้ง')">เมนูย่าง/ปิ้ง</button>
+                <button class="category-btn" onclick="filterMenu('เมนูยำ/ตำ')">เมนูยำ/ตำ</button>
+            </div>
+        </div>
+        <div class="menu-section">
+            <h3 class="section-title">🔍 เมนูอาหารของเรา</h3>
+            <div class="menu-grid" id="menuGrid"></div>
+        </div>
+    </div>
+    <div class="footer"><p style="font-size: 18px; margin-bottom: 10px;">© 2026 LINKCOOKING - แหล่งรวมสูตรอาหารไทย</p><p>ติดต่อเรา: 02-XXX-XXXX | Line: @linkcooking</p></div>
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p id="modalDescription"></p>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" class="recipe-image" src="" alt="">
+                <div class="recipe-info">
+                    <div class="info-item"><span>⏱️ เวลา:</span><span id="modalTime"></span></div>
+                    <div class="info-item"><span>👥 สำหรับ:</span><span id="modalServings"></span></div>
+                    <div class="info-item"><span>🌶️ ระดับความเผ็ด:</span><span id="modalSpicy"></span></div>
+                </div>
+                <div class="recipe-section"><h3>🥘 ส่วนผสม</h3><ul class="ingredients-list" id="modalIngredients"></ul></div>
+                <div class="recipe-section"><h3>👨‍🍳 วิธีทำ</h3><ol class="steps-list" id="modalSteps"></ol></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const menus = [
+            {id: 1, name: 'ผัดไทย', description: 'ผัดไทยแท้รสชาติดั้งเดิม มอบความกลมกล่อม', image: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop', category: 'เมนูเส้น', time: '25 นาที', servings: '2 ท่าน', spicy: '🌶️ เผ็ดน้อย', ingredients: ['เส้นผัดไทย 200 กรัม', 'กุ้งสด 150 กรัม', 'เต้าหู้แข็ง 2 แผ่น', 'ไข่ไก่ 2 ฟอง', 'ถั่วงอก 100 กรัม', 'กุยช่าย 50 กรัม', 'ถั่วลิสงคั่วบด 3 ช้อนโต๊ะ', 'น้ำตาลปี๊บ 3 ช้อนโต๊ะ', 'น้ำปลา 2 ช้อนโต๊ะ', 'น้ำมะขามเปียก 3 ช้อนโต๊ะ'], steps: ['แช่เส้นผัดไทยในน้ำอุ่นประมาณ 15-20 นาที จนเส้นนิ่ม แล้วสะเด็ดน้ำให้แห้ง', 'ผสมน้ำตาลปี๊บ น้ำปลา น้ำมะขามเปียก และซอสมะเขือเทศเข้าด้วยกัน', 'ตั้งกระทะให้ร้อน ใส่น้ำมัน ผัดกระเทียมจนหอม ใส่กุ้งผัดจนสุก', 'ใส่ไข่ตีลงไป คนให้แตก ใส่เส้นผัดไทยลงไปผัด', 'ใส่เต้าหู้ กุ้ง และน้ำปรุงรส ผัดให้เข้ากัน', 'ใส่ถั่วงอก กุยช่าย ผัดให้เข้ากันอีกครั้ง', 'ตักใส่จาน โรยถั่วลิสงบด เสิร์ฟพร้อมมะนาว']},
+            {id: 2, name: 'ต้มยำกุ้ง', description: 'ต้มยำรสจัดจ้าน เปรี้ยว เผ็ด ถึงรสไทย', image: 'https://d3h1lg3ksw6i6b.cloudfront.net/media/image/2023/04/24/5608757681874e1ea5df1aa41d5b2e3d_How_To_Make_Tom_Yam_Kung_The_Epitome_Of_Delicious_And_Nutritious_Thai_Cuisine3.jpg', category: 'เมนูต้ม/แกง', time: '30 นาที', servings: '3-4 ท่าน', spicy: '🌶️🌶️🌶️ เผ็ดมาก', ingredients: ['กุ้งแม่น้ำ 300 กรัม', 'เห็ดฟาง 100 กรัม', 'มะเขือเทศ 3 ลูก', 'ตะไคร้ 3 ต้น', 'ข่า 50 กรัม', 'ใบมะกรูด 5 ใบ', 'พริกขี้หนู 7-10 เม็ด', 'น้ำมะนาว 4 ช้อนโต๊ะ', 'น้ำปลา 3 ช้อนโต๊ะ', 'น้ำพริกเผา 2 ช้อนโต๊ะ'], steps: ['ต้มน้ำสต๊อกให้เดือด ใส่ตะไคร้ ข่า และใบมะกรูด', 'ใส่เห็ดฟาง และมะเขือเทศ ต้มจนเริ่มสุก', 'ใส่กุ้งแม่น้ำ ต้มจนกุ้งสุกเปลี่ยนสีชมพู', 'ใส่น้ำพริกเผา คนให้ละลาย', 'ปรุงรสด้วยน้ำปลา และน้ำมะนาว', 'ใส่พริกขี้หนูที่ตำไว้ คนให้เข้ากัน ยกลง', 'ตักใส่ชาม โรยผักชีและหอมแดง เสิร์ฟร้อนๆ']},
+            {id: 3, name: 'ส้มตำ', description: 'ส้มตำไทยรสชาติต้นตำรับ เผ็ดจัดจัดสมุนไพร', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQabiGJJOE2mF5BHjb9f-7Jv6igMrzRY1hvQg&s', category: 'เมนูยำ/ตำ', time: '20 นาที', servings: '2 ท่าน', spicy: '🌶️🌶️🌶️ เผ็ดมาก', ingredients: ['มะละกอดิบ 300 กรัม', 'มะเขือเทศ 3 ลูก', 'ถั่วฝักยาว 5 เส้น', 'กุ้งแห้ง 30 กรัม', 'ถั่วลิสง 2 ช้อนโต๊ะ', 'พริกขี้หนู 7-10 เม็ด', 'กระเทียม 3 กลีบ', 'น้ำปลา 2 ช้อนโต๊ะ', 'น้ำมะนาว 2 ช้อนโต๊ะ', 'น้ำตาลปี๊บ 1.5 ช้อนโต๊ะ'], steps: ['เตรียมมะละกอโดยปอกเปลือก ขูดเป็นเส้น', 'ใส่พริก กระเทียม ถั่วลิสงลงในครก ตำให้แหลก', 'ใส่น้ำตาลปี๊บ ตำให้ละลาย', 'ใส่ถั่วฝักยาว ตำพอแหลก แล้วใส่กุ้งแห้ง', 'ใส่มะละกอ มะเขือเทศ ตำเบาๆ ปรุงรส', 'ชิมรสให้ได้รสเปรี้ยว หวาน เค็ม เผ็ดลงตัว', 'ตักใส่จาน เสิร์ฟพร้อมผักสด ไข่เค็ม']},
+            {id: 4, name: 'ข้าวผัด', description: 'ข้าวผัดหอม กรอบ หวาน เค็มลงตัว', image: 'https://tecnogasthai.com/wp-content/uploads/2023/08/%E0%B8%97%E0%B8%B3%E0%B9%84%E0%B8%A1%E0%B9%83%E0%B8%8A%E0%B9%89%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B9%80%E0%B8%81%E0%B9%88%E0%B8%B2%E0%B8%97%E0%B8%B3%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%9C%E0%B8%B1%E0%B8%94%E0%B8%96%E0%B8%B6%E0%B8%87%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B8%81%E0%B8%A7%E0%B9%88%E0%B8%B2.png', category: 'เมนูข้าว', time: '20 นาที', servings: '2 ท่าน', spicy: '🌶️ เผ็ดน้อย', ingredients: ['ข้าวสวยเย็น 3 ถ้วย', 'ไข่ไก่ 2 ฟอง', 'หมูสับ 100 กรัม', 'กุ้งสด 100 กรัม', 'หอมใหญ่ 1/2 หัว', 'มะเขือเทศ 2 ลูก', 'กระเทียมสับ 2 ช้อนโต๊ะ', 'น้ำมันหอย 2 ช้อนโต๊ะ', 'ซอสปรุงรส 1 ช้อนโต๊ะ'], steps: ['ตั้งกระทะให้ร้อน ใส่น้ำมัน ผัดกระเทียมจนหอม', 'ใส่หมูสับ กุ้ง ผัดจนสุก', 'ใส่ไข่ตีลงไป คนเร็วๆ ให้แตก', 'ใส่ข้าวสวย คลุกเคล้าให้เข้ากัน', 'ใส่หอมใหญ่ มะเขือเทศ ผัดจนหอมนุ่ม', 'ปรุงรสด้วยน้ำมันหอย ซอสปรุงรส', 'ตักใส่จาน เสิร์ฟพร้อมแตงกวา มะนาว']},
+            {id: 5, name: 'แกงเขียวหวานไก่', description: 'แกงเขียวหวานไก่รสชาติเข้มข้น หอม หวาน', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyKnmWrguXbUVoLkXJANxsc8lWfOFxZyRaSg&s', category: 'เมนูต้ม/แกง', time: '35 นาที', servings: '3-4 ท่าน', spicy: '🌶️🌶️ เผ็ดกลาง', ingredients: ['เนื้อไก่ 300 กรัม', 'พริกแกงเขียวหวาน 3 ช้อนโต๊ะ', 'กะทิ 2 ถ้วย', 'มะเขือพวง 100 กรัม', 'ใบโหระพา 1 กำ', 'พริกชี้ฟ้า 3 เม็ด', 'น้ำตาลปี๊บ 2 ช้อนโต๊ะ', 'น้ำปลา 2 ช้อนโต๊ะ', 'ใบมะกรูด 5 ใบ'], steps: ['ตั้งกระทะให้ร้อน ใส่กะทิครึ่งหนึ่ง ต้มจนแตกมัน', 'ใส่พริกแกงเขียวหวาน ผัดจนหอม', 'ใส่เนื้อไก่ ผัดจนสุก', 'ใส่กะทิที่เหลือ ต้มให้เดือด', 'ใส่มะเขือพวง พริกชี้ฟ้า ต้มจนสุก', 'ปรุงรสด้วยน้ำตาลปี๊บ น้ำปลา', 'ใส่ใบมะกรูด ใบโหระพา ยกลง เสิร์ฟร้อนๆ']}
+        ];
+        function displayMenu(cat = 'ทั้งหมด') {
+            const grid = document.getElementById('menuGrid');
+            const filtered = cat === 'ทั้งหมด' ? menus : menus.filter(m => m.category === cat);
+            grid.innerHTML = filtered.map(m => `
+                <div class="menu-card" onclick="showRecipe(${m.id})">
+                    <img src="${m.image}" alt="${m.name}" class="menu-image">
+                    <div class="menu-content">
+                        <h4 class="menu-title">${m.name}</h4>
+                        <p class="menu-description">${m.description}</p>
+                        <button class="view-recipe-btn">ดูสูตรอาหาร</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function filterMenu(cat) {
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === cat) btn.classList.add('active');
+            });
+            displayMenu(cat);
+        }
+        function showRecipe(id) {
+            const recipe = menus.find(m => m.id === id);
+            document.getElementById('modalTitle').textContent = recipe.name;
+            document.getElementById('modalDescription').textContent = recipe.description;
+            document.getElementById('modalImage').src = recipe.image;
+            document.getElementById('modalTime').textContent = recipe.time;
+            document.getElementById('modalServings').textContent = recipe.servings;
+            document.getElementById('modalSpicy').textContent = recipe.spicy;
+            document.getElementById('modalIngredients').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
+            document.getElementById('modalSteps').innerHTML = recipe.steps.map(s => `<li>${s}</li>`).join('');
+            document.getElementById('recipeModal').style.display = 'block';
+        }
+        function closeModal() {
+            document.getElementById('recipeModal').style.display = 'none';
+        }
+        window.onclick = function(e) {
+            if (e.target == document.getElementById('recipeModal')) closeModal();
+        }
+        displayMenu();
+    </script>
+</body>
+</html>
